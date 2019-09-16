@@ -1,0 +1,32 @@
+﻿{
+    "$schema": "http://json.schemastore.org/proxies",
+    "proxies": {
+        "CreateGame": {
+            "matchCondition": {
+                "route": "/creategame",
+                "methods": [ "POST" ]
+            },
+            "responseOverrides": {
+                "response.body": {
+                    "id": 1
+                }
+            }
+        },
+        "GetGame": {
+            "matchCondition": {
+                "route": "/getgame",
+                "methods": [ "GET" ]
+            },
+            "responseOverrides": {
+                "response.body": {
+                    "id": 1,
+                    "players": [
+                        "Adam",
+                        "Bob",
+                        "Clint"
+                    ]
+                }
+            }
+        }
+    }
+}
