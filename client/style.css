@@ -1,8 +1,4 @@
-.navbar {
-    padding-left: 200px;
-}
-
-.card {
+#main {
     margin: 50px 200px 0 200px;
 }
 
@@ -12,4 +8,12 @@
 
 #joinGameForm button {
     max-height: 38px;
+}
+
+.card {
+    margin: 20px 0;
+}
+
+.navbar {
+    padding-left: 200px;
 }

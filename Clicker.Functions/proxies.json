@@ -1,9 +1,9 @@
 ﻿{
     "$schema": "http://json.schemastore.org/proxies",
     "proxies": {
-        "CreateGame": {
+        "JoinGame": {
             "matchCondition": {
-                "route": "/creategame",
+                "route": "/joingame",
                 "methods": [ "POST" ]
             },
             "responseOverrides": {

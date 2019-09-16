@@ -20,23 +20,54 @@
         </button>
     </nav>
 
-    <div class="card">
-        <h5 class="card-header">Create a new game!</h5>
-        <div class="card-body">
-            <button id="newGame" type="submit" href="#" class="btn btn-primary">Create</button>
-            <label id="newGameLink" class="collapse">
-                <a href="/">Go to your game!</a>
-            </label>
+    <div id="main">
+        <div class="card">
+            <h5 id="gameName" class="card-header">Join the game!</h5>
+            <div class="card-body">
+                <form id="joinGameForm" class="needs-validation" novalidate>
+                    <div class="form-group row">
+                        <label for="playerName" class="col-sm-2 col-form-label">Your name:</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" id="playerName" required>
+                            <div class="invalid-feedback">
+                                Player name is required!
+                            </div>
+                        </div>
+                        <button type="submit" href="#" class="btn btn-outline-success col-sm-2">Join</button>
+                        <label id="yourGameLink" class="col-form-label col-sm-3 collapse">
+                            <a href="/">Play!</a>
+                        </label>
+                    </div>
+                </form>
+            </div>
         </div>
-    </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="card">
+                    <h5 class="card-header">Live standings</h5>
+                    <div class="card-body">
 
-    <script src="index.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
-    </script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
-    </script>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+
+                <div class="card">
+                    <h5 class="card-header">Click!</h5>
+                    <div class="card-body">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="index.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
+        </script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
+        </script>
 </body>
 
 </html>
