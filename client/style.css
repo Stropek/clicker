@@ -1,0 +1,15 @@
+.navbar {
+    padding-left: 200px;
+}
+
+.card {
+    margin: 50px 200px 0 200px;
+}
+
+#newGameLink {
+    margin: 20px 0 0 0;
+}
+
+#joinGameForm button {
+    max-height: 38px;
+}
