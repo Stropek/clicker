@@ -1,11 +1,9 @@
 // var siteDomain = "https://" + document.domain;
 var siteDomain = "http://localhost:7071";
 
-var gameId;
+var playerId;
 
 $(document).ready(function () {
-
-    gameId = $.urlParam('id');
 
     // Fetch all the forms we want to apply custom Bootstrap validation styles to
     var forms = $('.needs-validation');
@@ -30,13 +28,13 @@ $('#joinGameForm').submit(function (event) {
         };
 
         $.ajax({
-            url: siteDomain + "/joingame",
+            url: siteDomain + "/join",
             type: "POST",
             data: JSON.stringify(joinGameData),
             contentType: "application/json",
             dataType: "json",
             success: function (data) {
-                $('#yourGameLink a').attr('href', `/answer.html?playerId=${data.playerId}`);
+                playerId = data.id;
 
                 $('#joinGameForm input').prop('disabled', true);
                 $('#joinGameForm button').prop('disabled', true);

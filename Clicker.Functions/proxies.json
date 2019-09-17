@@ -1,14 +1,16 @@
 ﻿{
     "$schema": "http://json.schemastore.org/proxies",
     "proxies": {
-        "JoinGame": {
+        "Join": {
             "matchCondition": {
-                "route": "/joingame",
+                "route": "/join",
                 "methods": [ "POST" ]
             },
             "responseOverrides": {
                 "response.body": {
-                    "id": 1
+                    "id": "12345678-1234-1234-1234-123456789012",
+                    "name": "Adam",
+                    "clicks": 0
                 }
             }
         },
