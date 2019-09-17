@@ -26,8 +26,7 @@ $('#joinGameForm').submit(function (event) {
     if ($.trim($('#playerName').val()) != '') {
 
         var joinGameData = {
-            "playerName": $('#playerName').val(),
-            "gameId": gameId
+            "playerName": $('#playerName').val()
         };
 
         $.ajax({
@@ -43,7 +42,7 @@ $('#joinGameForm').submit(function (event) {
                 $('#joinGameForm button').prop('disabled', true);
 
                 // display URL to game's site
-                $('#yourGameLink').collapse('show');
+                $('#clicker').collapse('show');
             },
             error: function (_, textStatus) {
                 console.log(textStatus)
