@@ -1,5 +1,5 @@
-// var siteDomain = "https://" + document.domain;
-var siteDomain = "http://localhost:7071";
+const siteDomain = "http://localhost:8000";
+const functionsDomain = "http://localhost:7071";
 
 var playerId;
 
@@ -16,6 +16,20 @@ $(document).ready(function () {
             form.classList.add('was-validated');
         }, false);
     });
+
+    $.ajax({
+        url: functionsDomain + "/getgame",
+        type: "GET",
+        dataType: "json",
+        success: function (data) {
+            console.log(data.id);
+            $('#liveStandings').bootstrapTable({data: data.players});
+            console.log(data.players);
+        },
+        error: function (_, textStatus) {
+            console.log(textStatus)
+        }
+    });
 });
 
 $('#joinGameForm').submit(function (event) {
@@ -28,7 +42,7 @@ $('#joinGameForm').submit(function (event) {
         };
 
         $.ajax({
-            url: siteDomain + "/join",
+            url: functionsDomain + "/join",
             type: "POST",
             data: JSON.stringify(joinGameData),
             contentType: "application/json",
@@ -57,3 +71,27 @@ $.urlParam = function (name) {
         return results[1] || 0;
     }
 }
+
+// function refreshPlayers();
+
+const connect = () => {
+    const connection = new signalR.HubConnectionBuilder()
+                            .withUrl(`${functionsDomain}/api`)
+                            .build();
+
+    connection.onclose(()  => {
+        console.log('SignalR connection disconnected');
+        setTimeout(() => connect(), 2000);
+    });
+
+    connection.on('playersUpdated', players => {
+        $('#liveStandings').bootstrapTable({data: players});
+        console.log('players updated');
+    });
+
+    connection.start().then(() => {
+        console.log("SignalR connection established");
+    });
+};
+
+connect();
