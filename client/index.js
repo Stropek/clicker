@@ -1,6 +1,9 @@
 const siteDomain = "http://localhost:8000";
 const functionsDomain = "http://localhost:7071";
 
+// const siteDomain = "https://clickerpc.z19.web.core.windows.net";
+// const functionsDomain = "https://clicker-pc.azurewebsites.net";
+
 var playerId;
 
 $(document).ready(function () {
