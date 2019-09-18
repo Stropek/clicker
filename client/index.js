@@ -18,12 +18,11 @@ $(document).ready(function () {
     });
 
     $.ajax({
-        url: functionsDomain + "/getgame",
+        url: functionsDomain + "/game",
         type: "GET",
         dataType: "json",
         success: function (data) {
-            console.log(data.id);
-            $('#liveStandings').bootstrapTable({data: data.players});
+            $('#liveStandings').bootstrapTable({data: data.players, formatNoMatches: function() { return "Waiting for players to join..."; }});
             console.log(data.players);
         },
         error: function (_, textStatus) {
@@ -63,6 +62,37 @@ $('#joinGameForm').submit(function (event) {
     }
 });
 
+$('#readyButton').click(function (event) {
+
+    var readyData = {
+        "playerId": playerId
+    };
+
+    $.ajax({
+        url: functionsDomain + "/ready",
+        type: "POST",
+        data: JSON.stringify(readyData),
+        contentType: "application/json",
+        dataType: "json",
+        success: function (data) {
+            
+            if (!data.ready) {
+                $('#readyButton').collapse('hide');
+                $('#waitingInfo').collapse('show');
+            } else {
+                
+            }
+        },
+        error: function (_, textStatus) {
+            console.log(textStatus)
+        }
+    });
+});
+
+$('#clickerButton').click(function (event) {
+    console.log('click')
+});
+
 $.urlParam = function (name) {
     var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
     if (results == null) {
@@ -71,8 +101,6 @@ $.urlParam = function (name) {
         return results[1] || 0;
     }
 }
-
-// function refreshPlayers();
 
 const connect = () => {
     const connection = new signalR.HubConnectionBuilder()
@@ -86,7 +114,10 @@ const connect = () => {
 
     connection.on('playersUpdated', players => {
         $('#liveStandings').bootstrapTable({data: players});
-        console.log('players updated');
+    });
+
+    connection.on('countdownReset', time => {
+        console.log('Countdown reset to ' + time);
     });
 
     connection.start().then(() => {

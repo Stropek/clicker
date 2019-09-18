@@ -10,9 +10,9 @@ using Newtonsoft.Json;
 
 namespace Clicker.Functions
 {
-    public static class GetGameById
+    public static class GetGame
     {
-        [FunctionName("GetGameById")]
+        [FunctionName("GetGame")]
         public static async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)] HttpRequest req,
             ILogger log)

@@ -17,3 +17,7 @@
 .navbar {
     padding-left: 200px;
 }
+
+.no-records-found {
+    font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace !important;
+}
