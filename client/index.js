@@ -23,7 +23,6 @@ $(document).ready(function () {
         dataType: "json",
         success: function (data) {
             $('#liveStandings').bootstrapTable({data: data.players, formatNoMatches: function() { return "Waiting for players to join..."; }});
-            console.log(data.players);
         },
         error: function (_, textStatus) {
             console.log(textStatus)
@@ -37,7 +36,7 @@ $('#joinGameForm').submit(function (event) {
     if ($.trim($('#playerName').val()) != '') {
 
         var joinGameData = {
-            "playerName": $('#playerName').val()
+            "name": $('#playerName').val()
         };
 
         $.ajax({
@@ -52,8 +51,9 @@ $('#joinGameForm').submit(function (event) {
                 $('#joinGameForm input').prop('disabled', true);
                 $('#joinGameForm button').prop('disabled', true);
 
-                // display URL to game's site
-                $('#clicker').collapse('show');
+                // display player's board
+                $('#playerBoard .card-header').text(`${data.name}'s board`);
+                $('#playerBoard').collapse('show');
             },
             error: function (_, textStatus) {
                 console.log(textStatus)

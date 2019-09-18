@@ -1,57 +1,26 @@
 ﻿{
-  "$schema": "http://json.schemastore.org/proxies",
-  "proxies": {
-    "Join": {
-      "matchCondition": {
-        "route": "/join",
-        "methods": [ "POST", "OPTIONS" ]
-      },
-      "responseOverrides": {
-        "response.body": {
-          "id": "12345678-1234-1234-1234-123456789012",
-          "name": "Adam",
-          "clicks": 0
-        }
-      }
-    },
-    "Ready": {
-      "matchCondition": { 
-        "route": "/ready", 
-        "methods": [ "POST", "OPTIONS" ] 
-      },
-      "responseOverrides": {
-        "response.body": { 
-          "ready": false,
-          "reason":  "waiting for more players..."
-        }
-      }
-    },
-    "Game": {
-      "matchCondition": {
-        "route": "/game",
-        "methods": [ "GET", "OPTIONS" ]
-      },
-      "responseOverrides": {
-        "response.body": {
-          "players": [
-            {
-              "id": "12345678-1234-1234-1234-123456789012",
-              "name": "Adam",
-              "clicks": 50
+    "$schema": "http://json.schemastore.org/proxies",
+    "proxies": {
+        "Join": {
+            "matchCondition": {
+                "route": "/join",
+                "methods": [ "POST", "OPTIONS" ]
             },
-            {
-              "id": "12345678-1234-1234-1234-123456789012",
-              "name": "Bob",
-              "clicks": 40
+            "backendUri": "https://%WEBSITE_HOSTNAME%/api/JoinGame"
+        },
+        "Ready": {
+            "matchCondition": {
+                "route": "/ready",
+                "methods": [ "POST", "OPTIONS" ]
             },
-            {
-              "id": "12345678-1234-1234-1234-123456789012",
-              "name": "Clint",
-              "clicks": 30
-            }
-          ]
+            "backendUri": "https://%WEBSITE_HOSTNAME%/api/SendReady"
+        },
+        "Game": {
+            "matchCondition": {
+                "route": "/game",
+                "methods": [ "GET", "OPTIONS" ]
+            },
+            "backendUri": "https://%WEBSITE_HOSTNAME%/api/GetGame"
         }
-      }
     }
-  }
 }

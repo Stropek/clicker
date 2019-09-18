@@ -7,20 +7,26 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using System.Collections.Generic;
+using Clicker.Functions.Entities;
 
 namespace Clicker.Functions
 {
-    public static class ResetCountdown
+    public static class SendReady
     {
-        [FunctionName("ResetCountdown")]
+        [FunctionName("SendReady")]
         public static async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = null)] HttpRequest req,
+            [CosmosDB("game", "players", ConnectionStringSetting = "CosmosDBConnection",
+                SqlQuery = "SELECT * FROM c ORDER BY c.clicks DESC, c.name ASC")] IEnumerable<Player> players,
             ILogger log)
         {
             // TODO:
-            // - check if there are sufficient players should happen during 'join' call
             // this function should
-            // - check if there are sufficient players
+            // - check if there are sufficient players (CosmosDB)
+            // - if there are, check if all are ready
+            // - if there aren't, or not all are ready - nothing happens
+            // - if there are, clock should be set (or reset) to 30 seconds to start (SignalR)
 
             log.LogInformation("C# HTTP trigger function processed a request.");
 

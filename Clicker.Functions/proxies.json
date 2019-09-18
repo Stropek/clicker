@@ -4,31 +4,28 @@
         "Join": {
             "matchCondition": {
                 "route": "/join",
-                "methods": [ "POST" ]
+                "methods": [ "POST", "OPTIONS" ]
+            },
+            "backendUri": "https://%WEBSITE_HOSTNAME%/api/JoinGame"
+        },
+        "Ready": {
+            "matchCondition": {
+                "route": "/ready",
+                "methods": [ "POST", "OPTIONS" ]
             },
             "responseOverrides": {
                 "response.body": {
-                    "id": "12345678-1234-1234-1234-123456789012",
-                    "name": "Adam",
-                    "clicks": 0
+                    "ready": false,
+                    "reason": "waiting for more players..."
                 }
             }
         },
-        "GetGame": {
+        "Game": {
             "matchCondition": {
-                "route": "/getgame",
-                "methods": [ "GET" ]
+                "route": "/game",
+                "methods": [ "GET", "OPTIONS" ]
             },
-            "responseOverrides": {
-                "response.body": {
-                    "id": 1,
-                    "players": [
-                        "Adam",
-                        "Bob",
-                        "Clint"
-                    ]
-                }
-            }
+            "backendUri": "https://%WEBSITE_HOSTNAME%/api/GetGame"
         }
     }
 }

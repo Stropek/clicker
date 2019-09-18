@@ -10,22 +10,9 @@ namespace Clicker.Functions
         [FunctionName("Negotiate")]
         public static SignalRConnectionInfo GetSignalRInfo(
             [HttpTrigger(AuthorizationLevel.Anonymous, "post")] HttpRequest req,
-            [SignalRConnectionInfo(HubName = "players")] SignalRConnectionInfo connectionInfo)
+            [SignalRConnectionInfo(HubName = "clicker")] SignalRConnectionInfo connectionInfo)
         {
             return connectionInfo;
         }
-
-        //[FunctionName("messages")]
-        //public static Task SendMessage(
-        //    [HttpTrigger(AuthorizationLevel.Anonymous, "post")] object message,
-        //    [SignalR(HubName = "chat")] IAsyncCollector<SignalRMessage> signalRMessages)
-        //{
-        //    return signalRMessages.AddAsync(
-        //        new SignalRMessage
-        //        {
-        //            Target = "newMessage",
-        //            Arguments = new[] { message }
-        //        });
-        //}
     }
 }

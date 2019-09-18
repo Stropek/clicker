@@ -15,14 +15,14 @@
       }
     },
     "Ready": {
-      "matchCondition": { 
-        "route": "/ready", 
-        "methods": [ "POST", "OPTIONS" ] 
+      "matchCondition": {
+        "route": "/ready",
+        "methods": [ "POST", "OPTIONS" ]
       },
       "responseOverrides": {
-        "response.body": { 
+        "response.body": {
           "ready": false,
-          "reason":  "waiting for more players..."
+          "reason": "waiting for more players..."
         }
       }
     },

@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 
 namespace Clicker.Functions.Entities
 {
+    [JsonObject("Player")]
     public class Player
     {
         [JsonProperty]
@@ -10,5 +11,8 @@ namespace Clicker.Functions.Entities
 
         [JsonProperty]
         public string Name { get; set; }
+
+        [JsonProperty]
+        public int Clicks { get; set; }
     }
 }
