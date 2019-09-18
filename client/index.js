@@ -68,7 +68,8 @@ $('#joinGameForm').submit(function (event) {
 $('#readyButton').click(function (event) {
 
     var readyData = {
-        "playerId": playerId
+        "id": playerId,
+        "name": $('#playerName').val()
     };
 
     $.ajax({
@@ -116,10 +117,15 @@ const connect = () => {
     });
 
     connection.on('playersUpdated', players => {
-        $('#liveStandings').bootstrapTable({data: players});
+        console.log('playersUpdated');
+
+
+        // $('#liveStandings').;
+        console.log(players);
     });
 
     connection.on('countdownReset', time => {
+        console.log('countdownReset');
         console.log('Countdown reset to ' + time);
     });
 
