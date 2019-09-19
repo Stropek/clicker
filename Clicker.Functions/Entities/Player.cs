@@ -8,6 +8,9 @@ namespace Clicker.Functions.Entities
         [JsonProperty("id")]
         public string Id { get; set; }
 
+        [JsonProperty("publicId")]
+        public string PublicId { get; set; }
+
         [JsonProperty("name")]
         public string Name { get; set; }
 

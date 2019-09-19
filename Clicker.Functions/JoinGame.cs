@@ -18,6 +18,7 @@ namespace Clicker.Functions
             log.LogInformation($"{player.Name} joined the game.");
 
             player.Id = Guid.NewGuid().GetHashCode().ToString();
+            player.PublicId = Guid.NewGuid().GetHashCode().ToString();
             newPlayer = player;
 
             return new JsonResult(newPlayer);

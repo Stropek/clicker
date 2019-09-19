@@ -5,6 +5,7 @@ const functionsDomain = "http://localhost:7071";
 // const functionsDomain = "https://clicker-pc.azurewebsites.net";
 
 var playerId;
+var publicId;
 
 $(document).ready(function () {
 
@@ -55,40 +56,13 @@ $('#joinGameForm').submit(function (event) {
             dataType: "json",
             success: function (data) {
                 playerId = data.id;
+                publicId = data.publicId;
             },
             error: function (_, textStatus) {
                 console.log(textStatus)
             }
         });
     }
-});
-
-$('#readyButton').click(function (event) {
-
-    var readyData = {
-        "id": playerId,
-        "name": $('#playerName').val()
-    };
-
-    $.ajax({
-        url: functionsDomain + "/ready",
-        type: "POST",
-        data: JSON.stringify(readyData),
-        contentType: "application/json",
-        dataType: "json",
-        success: function (data) {
-
-            if (!data.ready) {
-                $('#readyButton').collapse('hide');
-                $('#waitingInfo').collapse('show');
-            } else {
-
-            }
-        },
-        error: function (_, textStatus) {
-            console.log(textStatus)
-        }
-    });
 });
 
 $('#clickerButton').click(function (event) {
@@ -117,7 +91,7 @@ const connect = () => {
     connection.on('playerJoined', player => {
         console.log('playerJoined');
 
-        if (player["id"] == playerId) {
+        if (player["publicId"] == publicId) {
             $('#joinGameForm input').prop('disabled', true);
             $('#joinGameForm button').prop('disabled', true);
 
@@ -126,7 +100,16 @@ const connect = () => {
             $('#playerBoard').collapse('show');
         }
 
-        console.log('add row to table');
+        var rowNumber = $('#liveStandings tbody tr').length;
+        var newPlayerRow = $(`<tr data-index='${rowNumber}'>`);
+        var cols = "";
+
+        cols += `<td class="collapse">${player["publicId"]}</td>`;
+        cols += `<td>${player["name"]}</td>`;
+        cols += `<td>${player["clicks"]}</td>`;
+
+        newPlayerRow.append(cols);
+        $('#liveStandings').append(newPlayerRow);
         console.log(player);
     });
 

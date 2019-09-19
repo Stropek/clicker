@@ -17,7 +17,7 @@ namespace Clicker.Functions
         public static IActionResult Run(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)] HttpRequest req,
             [CosmosDB("game", "players", ConnectionStringSetting = "CosmosDBConnection",
-                SqlQuery = "SELECT * FROM c ORDER BY c.clicks DESC")] IEnumerable<Player> players,
+                SqlQuery = "SELECT c.publicId, c.name, c.clicks FROM c ORDER BY c.clicks DESC")] IEnumerable<Player> players,
             ILogger log)
         {
             log.LogInformation("Getting players.");
