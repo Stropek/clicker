@@ -3,7 +3,7 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Azure.WebJobs.Extensions.SignalRService;
 
-namespace Clicker.Functions
+namespace Clicker.Functions.Http
 {
     public static class Negotiate
     {

@@ -32,5 +32,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Entities\" />
+    <Folder Include="Http\" />
+    <Folder Include="CosmosDb\" />
   </ItemGroup>
 </Project>

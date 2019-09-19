@@ -1,6 +1,3 @@
-using System;
-using System.IO;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
@@ -9,7 +6,7 @@ using Microsoft.Extensions.Logging;
 using Clicker.Functions.Entities;
 using System.Collections.Generic;
 
-namespace Clicker.Functions
+namespace Clicker.Functions.Http
 {
     public static class GetGame
     {

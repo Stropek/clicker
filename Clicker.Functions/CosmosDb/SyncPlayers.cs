@@ -8,7 +8,7 @@ using Microsoft.Azure.WebJobs.Extensions.SignalRService;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
-namespace Clicker.Functions
+namespace Clicker.Functions.CosmosDb
 {
     public static class SyncPlayers
     {
