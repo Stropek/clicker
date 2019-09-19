@@ -1,19 +1,26 @@
 ﻿{
-    "$schema": "http://json.schemastore.org/proxies",
-    "proxies": {
-        "Join": {
-            "matchCondition": {
-                "route": "/join",
-                "methods": [ "POST", "OPTIONS" ]
-            },
-            "backendUri": "https://%WEBSITE_HOSTNAME%/api/JoinGame"
-        },
-        "Game": {
-            "matchCondition": {
-                "route": "/game",
-                "methods": [ "GET", "OPTIONS" ]
-            },
-            "backendUri": "https://%WEBSITE_HOSTNAME%/api/GetGame"
-        }
+  "$schema": "http://json.schemastore.org/proxies",
+  "proxies": {
+    "Join": {
+      "matchCondition": {
+        "route": "/join",
+        "methods": [ "POST", "OPTIONS" ]
+      },
+      "backendUri": "https://%WEBSITE_HOSTNAME%/api/JoinGame"
+    },
+    "Click": {
+      "matchCondition": {
+        "route": "/click",
+        "methods": [ "POST", "OPTIONS" ]
+      },
+      "backendUri": "https://%WEBSITE_HOSTNAME%/api/IncrementClicks"
+    },
+    "Game": {
+      "matchCondition": {
+        "route": "/game",
+        "methods": [ "GET", "OPTIONS" ]
+      },
+      "backendUri": "https://%WEBSITE_HOSTNAME%/api/GetGame"
     }
+  }
 }

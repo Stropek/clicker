@@ -53,7 +53,7 @@ namespace Clicker.Functions.CosmosDb
                                 Arguments = new[] { (object)player, game }
                             });
                     }
-                    else if (clicks >= clicksGoal)
+                    else if (clicks > clicksGoal)
                     {
                         await messages.AddAsync(
                             new SignalRMessage

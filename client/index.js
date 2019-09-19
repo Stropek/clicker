@@ -96,7 +96,23 @@ $('#joinGameForm').submit(function (event) {
 });
 
 $('#clicker').click(function (event) {
-    console.log('click')
+
+    var incrementData = {
+        "id": `${playerId}`
+    };
+
+    $.ajax({
+        url: functionsDomain + "/click",
+        type: "POST",
+        data: JSON.stringify(incrementData),
+        contentType: "application/json",
+        success: function () {
+            console.log("Clickety-click!")
+        },
+        error: function (_, textStatus) {
+            console.log(textStatus)
+        }
+    });
 });
 
 $.urlParam = function (name) {
@@ -126,6 +142,14 @@ const showBoard = (playerName, game) => {
     $('#playerBoard').collapse('show');
 };
 
+const updateScore = (player) => {
+    var playerRow = $('.player-public-id', '#liveStandings tbody').filter(function() {
+        return $(this).text() == player.publicId;
+    }).closest("tr");
+
+    $('.player-clicks', playerRow).text(player.clicks);
+};
+
 const connect = () => {
     const connection = new signalR.HubConnectionBuilder()
         .withUrl(`${functionsDomain}/api`)
@@ -147,9 +171,9 @@ const connect = () => {
         var newPlayerRow = $(`<tr data-index='${rowNumber}'>`);
         var cols = "";
 
-        cols += `<td class="collapse">${player["publicId"]}</td>`;
-        cols += `<td>${player["name"]}</td>`;
-        cols += `<td>${player["clicks"]}</td>`;
+        cols += `<td class="collapse player-public-id">${player["publicId"]}</td>`;
+        cols += `<td class="player-name">${player["name"]}</td>`;
+        cols += `<td class="player-clicks">${player["clicks"]}</td>`;
 
         newPlayerRow.append(cols);
         $('#liveStandings').append(newPlayerRow);
@@ -168,12 +192,15 @@ const connect = () => {
 
     connection.on('announceWinner', player => {
         console.log('announceWinner');
-        console.log(player);
+        updateScore(player);
+
+        $('#winnerName').html(`And the winner is: ${player.name}`);
+        $('#winnerModal').modal({backdrop: 'static', keyboard: false});
     });
 
     connection.on('updateScore', player => {
         console.log('updateScore');
-        console.log(player);
+        updateScore(player);
     });
 
     connection.start().then(() => {

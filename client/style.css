@@ -10,12 +10,37 @@
     max-height: 38px;
 }
 
+#clicker img {
+    width: 28px;
+    height: 28px;
+}
+
+#clicker img:hover {
+    width: 32px;
+    height: 32px;
+}
+
+#clicker img:active {
+    width: 36px;
+    height: 36px;
+}
+
 .card {
     margin: 20px 0;
 }
 
+.card-body {
+    min-height: 60px;
+}
+
 .navbar {
     padding-left: 200px;
+}
+
+.navbar img {
+    height: 30px;
+    width: 30px;
+    margin: 5px 20px;
 }
 
 .no-records-found {
@@ -35,10 +60,4 @@
 
 .bg-dark {
     background-color: darkgray !important;
-}
-
-.navbar img {
-    height: 30px;
-    width: 30px;
-    margin: 5px 20px;
 }

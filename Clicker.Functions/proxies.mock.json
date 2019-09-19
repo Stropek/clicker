@@ -1,45 +1,54 @@
 ﻿{
-    "$schema": "http://json.schemastore.org/proxies",
-    "proxies": {
-        "Join": {
-            "matchCondition": {
-                "route": "/join",
-                "methods": [ "POST", "OPTIONS" ]
-            },
-            "responseOverrides": {
-                "response.body": {
-                    "id": "12345678-1234-1234-1234-123456789012",
-                    "name": "Adam",
-                    "clicks": 0
-                }
-            }
-        },
-        "Game": {
-            "matchCondition": {
-                "route": "/game",
-                "methods": [ "GET", "OPTIONS" ]
-            },
-            "responseOverrides": {
-                "response.body": {
-                    "players": [
-                        {
-                            "id": "12345678-1234-1234-1234-123456789012",
-                            "name": "Adam",
-                            "clicks": 50
-                        },
-                        {
-                            "id": "12345678-1234-1234-1234-123456789012",
-                            "name": "Bob",
-                            "clicks": 40
-                        },
-                        {
-                            "id": "12345678-1234-1234-1234-123456789012",
-                            "name": "Clint",
-                            "clicks": 30
-                        }
-                    ]
-                }
-            }
+  "$schema": "http://json.schemastore.org/proxies",
+  "proxies": {
+    "Join": {
+      "matchCondition": {
+        "route": "/join",
+        "methods": [ "POST", "OPTIONS" ]
+      },
+      "responseOverrides": {
+        "response.body": {
+          "id": "12345678-1234-1234-1234-123456789012",
+          "name": "Adam",
+          "clicks": 0
         }
+      }
+    },
+    "Click": {
+      "matchCondition": {
+        "route": "/click",
+        "methods": [ "POST", "OPTIONS" ]
+      },
+      "responseOverrides": {
+        "response.statusCode": "200"
+      }
+    },
+    "Game": {
+      "matchCondition": {
+        "route": "/game",
+        "methods": [ "GET", "OPTIONS" ]
+      },
+      "responseOverrides": {
+        "response.body": {
+          "players": [
+            {
+              "id": "12345678-1234-1234-1234-123456789012",
+              "name": "Adam",
+              "clicks": 50
+            },
+            {
+              "id": "12345678-1234-1234-1234-123456789012",
+              "name": "Bob",
+              "clicks": 40
+            },
+            {
+              "id": "12345678-1234-1234-1234-123456789012",
+              "name": "Clint",
+              "clicks": 30
+            }
+          ]
+        }
+      }
     }
+  }
 }

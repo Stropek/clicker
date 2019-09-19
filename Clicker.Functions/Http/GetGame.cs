@@ -15,7 +15,7 @@ namespace Clicker.Functions.Http
     {
         [FunctionName("GetGame")]
         public static IActionResult Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get")] HttpRequest req,
             [CosmosDB("game", "players", ConnectionStringSetting = "CosmosDBConnection",
                 SqlQuery = "SELECT c.publicId, c.name, c.clicks FROM c ORDER BY c.clicks DESC")] IEnumerable<Player> players,
             [SignalR(HubName = "clicker")] IAsyncCollector<SignalRMessage> messages,

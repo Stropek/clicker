@@ -48,9 +48,9 @@
                         <table id="liveStandings" class="table">
                             <thead>
                                 <tr>
-                                    <th data-field="publicId" scope="col" class="collapse">Id</th>
-                                    <th data-field="name" scope="col">Name</th>
-                                    <th data-field="clicks" scope="col">Clicks</th>
+                                    <th data-field="publicId" scope="col" class="player-public-id collapse">Id</th>
+                                    <th data-field="name" scope="col" class="player-name">Name</th>
+                                    <th data-field="clicks" scope="col" class="player-clicks">Clicks</th>
                                 </tr>
                             </thead>
                         </table>
@@ -69,7 +69,27 @@
             </div>
         </div>
 
-        <div class="icons-link">Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> and <a href="https://www.flaticon.com/authors/good-ware" title="Good Ware">Good Ware</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
+        <div id="winnerModal" class="modal" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title"></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div id="winnerName" class="alert alert-success" role="alert">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="icons-link">Icons made by <a href="https://www.flaticon.com/authors/freepik"
+                title="Freepik">Freepik</a> and <a href="https://www.flaticon.com/authors/good-ware"
+                title="Good Ware">Good Ware</a> from <a href="https://www.flaticon.com/"
+                title="Flaticon">www.flaticon.com</a></div>
     </div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>

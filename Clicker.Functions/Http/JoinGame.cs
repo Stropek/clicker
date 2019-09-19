@@ -11,7 +11,7 @@ namespace Clicker.Functions.Http
     {
         [FunctionName("JoinGame")]
         public static IActionResult Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] Player player,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post")] Player player,
             [CosmosDB("game", "players", ConnectionStringSetting = "CosmosDBConnection")] out Player newPlayer,
             ILogger log)
         {
