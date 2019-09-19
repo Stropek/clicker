@@ -31,6 +31,13 @@ namespace Clicker.Functions.CosmosDb
             int.TryParse(config["MinPlayers"], out int minPlayers);
             int.TryParse(config["ClicksGoal"], out int clicksGoal);
 
+            var game = new Game
+            {
+                CountdownTime = countDownTime,
+                MinPlayers = minPlayers,
+                NumberOfPlayers = players.Count()
+            };
+
             if (modifiedPlayers != null && modifiedPlayers.Count() > 0)
             {
                 log.LogInformation($"{modifiedPlayers.Count()} players updated");
@@ -45,7 +52,7 @@ namespace Clicker.Functions.CosmosDb
                             new SignalRMessage
                             {
                                 Target = "playerJoined",
-                                Arguments = new[] { player }
+                                Arguments = new[] { (object)player, game }
                             });
                     }
                     else if (clicks >= clicksGoal)
@@ -69,14 +76,26 @@ namespace Clicker.Functions.CosmosDb
                 }
             }
 
-            if (players != null && players.Count() > minPlayers)
+            if (players != null && players.Count() >= minPlayers)
             {
-                await messages.AddAsync(
-                            new SignalRMessage
-                            {
-                                Target = "startGame",
-                                Arguments = new[] { (object)countDownTime }
-                            });
+                if (players.Any(p => p.Clicks > 0))
+                {
+                    await messages.AddAsync(
+                                new SignalRMessage
+                                {
+                                    Target = "startGame",
+                                    Arguments = new[] { game }
+                                });
+                }
+                else
+                {
+                    await messages.AddAsync(
+                                new SignalRMessage
+                                {
+                                    Target = "startCountdown",
+                                    Arguments = new[] { game }
+                                });
+                }
             }
         }
     }

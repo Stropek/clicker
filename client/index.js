@@ -6,6 +6,7 @@ const functionsDomain = "http://localhost:7071";
 
 var playerId;
 var publicId;
+var countdownId;
 
 $(document).ready(function () {
 
@@ -82,6 +83,18 @@ $.urlParam = function (name) {
     }
 }
 
+const refreshCountdown = (game) => {
+    $('#waitingInfo').html(`We've got <b>${game.numberOfPlayers}</b> players! The game will start in <b>~${game.countdownTime}</b> seconds.`)
+
+    if (game.countdownTime <= 0) {
+        clearInterval(countdownId);
+        $('#waitingInfo').collapse('hide');
+        $('#clicker').collapse('show');
+    } else {
+        game.countdownTime -= 1;
+    }
+};
+
 const connect = () => {
     const connection = new signalR.HubConnectionBuilder()
         .withUrl(`${functionsDomain}/api`)
@@ -92,16 +105,8 @@ const connect = () => {
         setTimeout(() => connect(), 2000);
     });
 
-    connection.on('playerJoined', player => {
+    connection.on('playerJoined', (player, game) => {
         console.log('playerJoined');
-
-        if (player["publicId"] == publicId) {
-            $('#addingPlayer').collapse('hide');
-
-            // display player's board
-            $('#playerBoard .card-header').text(`${player["name"]}'s board`);
-            $('#playerBoard').collapse('show');
-        }
 
         if ($('.no-records-found').length > 0) {
             $('.no-records-found').addClass('collapse');
@@ -117,7 +122,18 @@ const connect = () => {
 
         newPlayerRow.append(cols);
         $('#liveStandings').append(newPlayerRow);
-        console.log(player);
+        
+        if (player["publicId"] == publicId) {
+            $('#addingPlayer').collapse('hide');
+
+            // display player's board
+            $('#playerBoard .card-header').text(`${player["name"]}'s board`);
+            if (game.numberOfPlayers < game.minPlayers) {
+                $('#waitingInfo').html(`Waiting for more players to join - at least ${game.minPlayers} players are required.`);
+            }
+
+            $('#playerBoard').collapse('show');
+        }
     });
 
     connection.on('announceWinner', player => {
@@ -130,9 +146,17 @@ const connect = () => {
         console.log(player);
     });
 
-    connection.on('startGame', time => {
+    connection.on('startCountdown', game => {
+        console.log('startCountdown');
+        
+        $('#waitingInfo').html(`We've got <b>${game.numberOfPlayers}</b> players! The game will start in <b>~${game.countdownTime}</b> seconds.`)
+
+        clearInterval(countdownId);
+        countdownId = setInterval(() => refreshCountdown(game), 1000);
+    });
+    
+    connection.on('startGame', game => {
         console.log('startGame');
-        console.log('Starting the game in ' + time);
     });
 
     connection.start().then(() => {
