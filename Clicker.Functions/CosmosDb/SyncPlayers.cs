@@ -27,13 +27,11 @@ namespace Clicker.Functions.CosmosDb
                 .AddJsonFile("local.settings.json", true, true)
                 .AddEnvironmentVariables().Build();
 
-            int.TryParse(config["CountdownTime"], out int countDownTime);
             int.TryParse(config["MinPlayers"], out int minPlayers);
             int.TryParse(config["ClicksGoal"], out int clicksGoal);
 
             var game = new Game
             {
-                CountdownTime = countDownTime,
                 MinPlayers = minPlayers,
                 NumberOfPlayers = players.Count()
             };
@@ -73,28 +71,6 @@ namespace Clicker.Functions.CosmosDb
                                 Arguments = new[] { player }
                             });
                     }
-                }
-            }
-
-            if (players != null && players.Count() >= minPlayers)
-            {
-                if (players.Any(p => p.Clicks > 0))
-                {
-                    await messages.AddAsync(
-                                new SignalRMessage
-                                {
-                                    Target = "startGame",
-                                    Arguments = new[] { game }
-                                });
-                }
-                else
-                {
-                    await messages.AddAsync(
-                                new SignalRMessage
-                                {
-                                    Target = "startCountdown",
-                                    Arguments = new[] { game }
-                                });
                 }
             }
         }

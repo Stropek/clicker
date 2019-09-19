@@ -9,8 +9,5 @@ namespace Clicker.Functions.Entities
 
         [JsonProperty("minPlayers")]
         public int MinPlayers { get; set; }
-
-        [JsonProperty("countdownTime")]
-        public int CountdownTime { get; set; }
     }
 }

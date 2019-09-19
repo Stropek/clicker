@@ -5,10 +5,15 @@ const functionsDomain = "http://localhost:7071";
 // const functionsDomain = "https://clicker-pc.azurewebsites.net";
 
 var playerId;
+var playerName;
 var publicId;
 var countdownId;
 
 $(document).ready(function () {
+
+    playerId = cookies.get('clicker.playerId');
+    playerName = cookies.get('clicker.playerName');
+    publicId = cookies.get('clicker.publicId');
 
     // Fetch all the forms we want to apply custom Bootstrap validation styles to
     var forms = $('.needs-validation');
@@ -33,6 +38,22 @@ $(document).ready(function () {
                     return "Waiting for players to join...";
                 }
             });
+
+            if (publicId) {
+                var playerFound = false;
+                $.each(data.players, function (_, player) {
+                    if (player.publicId == publicId) {
+                        playerFound = true;
+                    }
+                });
+
+                if (playerFound) {
+                    $('#joinGameForm input').val(playerName);
+
+                    disableForm();
+                    showBoard(playerName, data.game);
+                }
+            }
         },
         error: function (_, textStatus) {
             console.log(textStatus)
@@ -46,8 +67,7 @@ $('#joinGameForm').submit(function (event) {
     if ($.trim($('#playerName').val()) != '') {
         $('#addingPlayer').collapse('show');
 
-        $('#joinGameForm input').prop('disabled', true);
-        $('#joinGameForm button').prop('disabled', true);
+        disableForm();
 
         var joinGameData = {
             "name": $('#playerName').val()
@@ -61,7 +81,12 @@ $('#joinGameForm').submit(function (event) {
             dataType: "json",
             success: function (data) {
                 playerId = data.id;
+                playerName = data.playerName;
                 publicId = data.publicId;
+
+                cookies.set('clicker.playerId', data.id);
+                cookies.set('clicker.playerName', data.name);
+                cookies.set('clicker.publicId', data.publicId);
             },
             error: function (_, textStatus) {
                 console.log(textStatus)
@@ -83,16 +108,22 @@ $.urlParam = function (name) {
     }
 }
 
-const refreshCountdown = (game) => {
-    $('#waitingInfo').html(`We've got <b>${game.numberOfPlayers}</b> players! The game will start in <b>~${game.countdownTime}</b> seconds.`)
+const disableForm = () => {
+    $('#joinGameForm input').prop('disabled', true);
+    $('#joinGameForm button').prop('disabled', true);
+};
 
-    if (game.countdownTime <= 0) {
-        clearInterval(countdownId);
+const showBoard = (playerName, game) => {
+    // display player's board
+    $('#playerBoard .card-header').text(`${playerName}'s board`);
+    if (game.numberOfPlayers < game.minPlayers) {
+        $('#waitingInfo').html(`Waiting for more players to join - at least ${game.minPlayers} players are required.`);
+    } else {
         $('#waitingInfo').collapse('hide');
         $('#clicker').collapse('show');
-    } else {
-        game.countdownTime -= 1;
     }
+
+    $('#playerBoard').collapse('show');
 };
 
 const connect = () => {
@@ -122,17 +153,16 @@ const connect = () => {
 
         newPlayerRow.append(cols);
         $('#liveStandings').append(newPlayerRow);
-        
+
         if (player["publicId"] == publicId) {
             $('#addingPlayer').collapse('hide');
 
-            // display player's board
-            $('#playerBoard .card-header').text(`${player["name"]}'s board`);
-            if (game.numberOfPlayers < game.minPlayers) {
-                $('#waitingInfo').html(`Waiting for more players to join - at least ${game.minPlayers} players are required.`);
-            }
+            showBoard(player["name"], game);
+        }
 
-            $('#playerBoard').collapse('show');
+        if (game.numberOfPlayers >= game.minPlayers) {
+            $('#waitingInfo').collapse('hide');
+            $('#clicker').collapse('show');
         }
     });
 
@@ -144,19 +174,6 @@ const connect = () => {
     connection.on('updateScore', player => {
         console.log('updateScore');
         console.log(player);
-    });
-
-    connection.on('startCountdown', game => {
-        console.log('startCountdown');
-        
-        $('#waitingInfo').html(`We've got <b>${game.numberOfPlayers}</b> players! The game will start in <b>~${game.countdownTime}</b> seconds.`)
-
-        clearInterval(countdownId);
-        countdownId = setInterval(() => refreshCountdown(game), 1000);
-    });
-    
-    connection.on('startGame', game => {
-        console.log('startGame');
     });
 
     connection.start().then(() => {
