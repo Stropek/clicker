@@ -4,6 +4,8 @@
 <head>
     <title>Clicker</title>
 
+    <link rel="icon" href="/icons/hand-clicker.png" type="image/png">
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
@@ -12,9 +14,9 @@
     <link rel="stylesheet" href="style.css" />
 </head>
 
-<body>
+<body class="text-monospace">
     <nav class="navbar navbar-expand navbar-dark bg-dark">
-        <a class="navbar-brand" href="/index.html">Clicker</a>
+        <a class="navbar-brand" href="/index.html"><img src="/icons/hand-clicker.png" />Clicker</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -35,6 +37,7 @@
                             </div>
                         </div>
                         <button type="submit" href="#" class="btn btn-outline-success col-sm-2">Join</button>
+                        <div id="addingPlayer" class="spinner-border text-success collapse" role="status"></div>
                     </div>
                 </form>
             </div>
@@ -61,13 +64,17 @@
                 <div id="playerBoard" class="card collapse">
                     <h5 class="card-header">Player's board</h5>
                     <div class="card-body">
-                        <div id="waitingInfo" class="text-center text-wrap text-monospace collapse show">Waiting for more players to join - at least 3 players are required.</div>
-                        <div id="countdownInfo" class="text-center text-wrap text-monospace collapse">30</div>
-                        <button id="clickerButton" class="btn btn-outline-warning collapse" href="/" disabled>Click!</button>
+                        <div id="waitingInfo" class="text-center text-wrap collapse show">Waiting for
+                            more players to join - at least 3 players are required.</div>
+                        <div id="countdownInfo" class="text-center text-wrap collapse">30</div>
+                        <button id="clickerButton" class="btn btn-outline-warning collapse" href="/"
+                            disabled>Click!</button>
                     </div>
                 </div>
             </div>
         </div>
+
+        <div class="icons-link">Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> and <a href="https://www.flaticon.com/authors/good-ware" title="Good Ware">Good Ware</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>

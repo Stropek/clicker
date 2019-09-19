@@ -42,7 +42,11 @@ $(document).ready(function () {
 $('#joinGameForm').submit(function (event) {
     event.preventDefault();
 
+    $('#addingPlayer').collapse('show');
+
     if ($.trim($('#playerName').val()) != '') {
+        $('#joinGameForm input').prop('disabled', true);
+        $('#joinGameForm button').prop('disabled', true);
 
         var joinGameData = {
             "name": $('#playerName').val()
@@ -92,12 +96,15 @@ const connect = () => {
         console.log('playerJoined');
 
         if (player["publicId"] == publicId) {
-            $('#joinGameForm input').prop('disabled', true);
-            $('#joinGameForm button').prop('disabled', true);
+            $('#addingPlayer').collapse('hide');
 
             // display player's board
             $('#playerBoard .card-header').text(`${player["name"]}'s board`);
             $('#playerBoard').collapse('show');
+        }
+
+        if ($('.no-records-found').length > 0) {
+            $('.no-records-found').addClass('collapse');
         }
 
         var rowNumber = $('#liveStandings tbody tr').length;
