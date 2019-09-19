@@ -42,9 +42,9 @@ $(document).ready(function () {
 $('#joinGameForm').submit(function (event) {
     event.preventDefault();
 
-    $('#addingPlayer').collapse('show');
-
     if ($.trim($('#playerName').val()) != '') {
+        $('#addingPlayer').collapse('show');
+
         $('#joinGameForm input').prop('disabled', true);
         $('#joinGameForm button').prop('disabled', true);
 
@@ -69,7 +69,7 @@ $('#joinGameForm').submit(function (event) {
     }
 });
 
-$('#clickerButton').click(function (event) {
+$('#clicker').click(function (event) {
     console.log('click')
 });
 
