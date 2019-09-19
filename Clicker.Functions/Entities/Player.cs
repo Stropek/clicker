@@ -1,6 +1,4 @@
-﻿using System;
-using Clicker.Functions.Enums;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
 namespace Clicker.Functions.Entities
 {
@@ -15,8 +13,5 @@ namespace Clicker.Functions.Entities
 
         [JsonProperty("clicks")]
         public int Clicks { get; set; }
-
-        [JsonProperty("status")]
-        public PlayerStatus Status { get; set; }
     }
 }

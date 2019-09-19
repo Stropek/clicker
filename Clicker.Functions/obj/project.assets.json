@@ -9471,6 +9471,7 @@
     ".NETCoreApp,Version=v2.1": [
       "Microsoft.Azure.WebJobs.Extensions.CosmosDB >= 3.0.4",
       "Microsoft.Azure.WebJobs.Extensions.SignalRService >= 1.0.1",
+      "Microsoft.Extensions.Configuration.Abstractions >= 2.2.0",
       "Microsoft.NET.Sdk.Functions >= 1.0.29",
       "Microsoft.NETCore.App >= 2.1.0"
     ]
@@ -9521,6 +9522,10 @@
           "Microsoft.Azure.WebJobs.Extensions.SignalRService": {
             "target": "Package",
             "version": "[1.0.1, )"
+          },
+          "Microsoft.Extensions.Configuration.Abstractions": {
+            "target": "Package",
+            "version": "[2.2.0, )"
           },
           "Microsoft.NET.Sdk.Functions": {
             "target": "Package",

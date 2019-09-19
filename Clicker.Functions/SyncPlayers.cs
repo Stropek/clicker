@@ -2,10 +2,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Clicker.Functions.Entities;
-using Clicker.Functions.Enums;
 using Microsoft.Azure.Documents;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.SignalRService;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
 namespace Clicker.Functions
@@ -13,34 +13,71 @@ namespace Clicker.Functions
     public static class SyncPlayers
     {
         [FunctionName("SyncPlayers")]
-        public static Task Run(
+        public static async Task Run(
             [CosmosDBTrigger("game", "players", ConnectionStringSetting = "CosmosDBConnection", LeaseCollectionName = "leases", CreateLeaseCollectionIfNotExists = true)] IReadOnlyList<Document> modifiedPlayers,
             [CosmosDB("game", "players", ConnectionStringSetting = "CosmosDBConnection",
                 SqlQuery = "SELECT * FROM c ORDER BY c.clicks DESC")] IEnumerable<Player> players,
             [SignalR(HubName = "clicker")] IAsyncCollector<SignalRMessage> messages,
-            ILogger log)
+            ILogger log,
+            ExecutionContext context)
         {
-            if (modifiedPlayers != null && modifiedPlayers.Count > 0)
+            log.LogInformation($"Syncing players data");
+
+            var config = new ConfigurationBuilder().SetBasePath(context.FunctionAppDirectory)
+                .AddJsonFile("local.settings.json", true, true)
+                .AddEnvironmentVariables().Build();
+
+            int.TryParse(config["CountdownTime"], out int countDownTime);
+            int.TryParse(config["MinPlayers"], out int minPlayers);
+            int.TryParse(config["ClicksGoal"], out int clicksGoal);
+
+            if (modifiedPlayers != null && modifiedPlayers.Count() > 0)
             {
-                //log.LogInformation($"{modifiedPlayers.Where(p => p.Status == PlayerStatus.Joined).Count()} players joined");
-                //log.LogInformation($"{modifiedPlayers.Where(p => p.Status == PlayerStatus.Ready).Count()} players changed status to ready");
+                log.LogInformation($"{modifiedPlayers.Count()} players updated");
 
-                return messages.AddAsync(
-                    new SignalRMessage
+                foreach (var player in modifiedPlayers)
+                {
+                    var clicks = player.GetPropertyValue<int>("clicks");
+
+                    if (clicks == 0)
                     {
-                        Target = "playersJoined",
-                        Arguments = new[] { modifiedPlayers }
-                    });
-
-                // TODO:
-                // this function should
-                // - check if there are sufficient players (CosmosDB)
-                // - if there are, check if all are ready
-                // - if there aren't, or not all are ready - nothing happens
-                // - if there are, clock should be set (or reset) to 30 seconds to start (SignalR)
+                        await messages.AddAsync(
+                            new SignalRMessage
+                            {
+                                Target = "playerJoined",
+                                Arguments = new[] { player }
+                            });
+                    }
+                    else if (clicks >= clicksGoal)
+                    {
+                        await messages.AddAsync(
+                            new SignalRMessage
+                            {
+                                Target = "announceWinner",
+                                Arguments = new[] { player }
+                            });
+                    }
+                    else
+                    {
+                        await messages.AddAsync(
+                            new SignalRMessage
+                            {
+                                Target = "updateScore",
+                                Arguments = new[] { player }
+                            });
+                    }
+                }
             }
 
-            return null;
+            if (players != null && players.Count() > minPlayers)
+            {
+                await messages.AddAsync(
+                            new SignalRMessage
+                            {
+                                Target = "startGame",
+                                Arguments = new[] { (object)countDownTime }
+                            });
+            }
         }
     }
 }

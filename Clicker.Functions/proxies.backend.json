@@ -8,13 +8,6 @@
             },
             "backendUri": "https://%WEBSITE_HOSTNAME%/api/JoinGame"
         },
-        "Ready": {
-            "matchCondition": {
-                "route": "/ready",
-                "methods": [ "POST", "OPTIONS" ]
-            },
-            "backendUri": "https://%WEBSITE_HOSTNAME%/api/SendReady"
-        },
         "Game": {
             "matchCondition": {
                 "route": "/game",

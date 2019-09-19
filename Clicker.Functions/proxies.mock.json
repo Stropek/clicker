@@ -14,18 +14,6 @@
         }
       }
     },
-    "Ready": {
-      "matchCondition": {
-        "route": "/ready",
-        "methods": [ "POST", "OPTIONS" ]
-      },
-      "responseOverrides": {
-        "response.body": {
-          "ready": false,
-          "reason": "waiting for more players..."
-        }
-      }
-    },
     "Game": {
       "matchCondition": {
         "route": "/game",

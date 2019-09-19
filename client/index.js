@@ -25,7 +25,12 @@ $(document).ready(function () {
         type: "GET",
         dataType: "json",
         success: function (data) {
-            $('#liveStandings').bootstrapTable({data: data.players, formatNoMatches: function() { return "Waiting for players to join..."; }});
+            $('#liveStandings').bootstrapTable({
+                data: data.players,
+                formatNoMatches: function () {
+                    return "Waiting for players to join...";
+                }
+            });
         },
         error: function (_, textStatus) {
             console.log(textStatus)
@@ -50,13 +55,6 @@ $('#joinGameForm').submit(function (event) {
             dataType: "json",
             success: function (data) {
                 playerId = data.id;
-
-                $('#joinGameForm input').prop('disabled', true);
-                $('#joinGameForm button').prop('disabled', true);
-
-                // display player's board
-                $('#playerBoard .card-header').text(`${data.name}'s board`);
-                $('#playerBoard').collapse('show');
             },
             error: function (_, textStatus) {
                 console.log(textStatus)
@@ -79,12 +77,12 @@ $('#readyButton').click(function (event) {
         contentType: "application/json",
         dataType: "json",
         success: function (data) {
-            
+
             if (!data.ready) {
                 $('#readyButton').collapse('hide');
                 $('#waitingInfo').collapse('show');
             } else {
-                
+
             }
         },
         error: function (_, textStatus) {
@@ -108,25 +106,43 @@ $.urlParam = function (name) {
 
 const connect = () => {
     const connection = new signalR.HubConnectionBuilder()
-                            .withUrl(`${functionsDomain}/api`)
-                            .build();
+        .withUrl(`${functionsDomain}/api`)
+        .build();
 
-    connection.onclose(()  => {
+    connection.onclose(() => {
         console.log('SignalR connection disconnected');
         setTimeout(() => connect(), 2000);
     });
 
-    connection.on('playersUpdated', players => {
-        console.log('playersUpdated');
+    connection.on('playerJoined', player => {
+        console.log('playerJoined');
 
+        if (player["id"] == playerId) {
+            $('#joinGameForm input').prop('disabled', true);
+            $('#joinGameForm button').prop('disabled', true);
 
-        // $('#liveStandings').;
-        console.log(players);
+            // display player's board
+            $('#playerBoard .card-header').text(`${player["name"]}'s board`);
+            $('#playerBoard').collapse('show');
+        }
+
+        console.log('add row to table');
+        console.log(player);
     });
 
-    connection.on('countdownReset', time => {
-        console.log('countdownReset');
-        console.log('Countdown reset to ' + time);
+    connection.on('announceWinner', player => {
+        console.log('announceWinner');
+        console.log(player);
+    });
+
+    connection.on('updateScore', player => {
+        console.log('updateScore');
+        console.log(player);
+    });
+
+    connection.on('startGame', time => {
+        console.log('startGame');
+        console.log('Starting the game in ' + time);
     });
 
     connection.start().then(() => {
